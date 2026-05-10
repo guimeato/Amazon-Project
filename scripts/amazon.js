@@ -47,7 +47,7 @@ products.forEach((object)=>{
           Added
         </div>
 
-        <button class="add-to-cart-button button-primary" data-product-id="${product.id}">
+        <button class="add-to-cart-button button-primary" data-product-id="${object.id}">
           Add to Cart
         </button>
       </div>
@@ -63,6 +63,9 @@ listOfElements.innerHTML = productsHTML;
 
 
 const addCartBtn = document.querySelectorAll('.button-primary');
+
+
+const cartQuantityElement = document.querySelector('.cart-quantity');
 
 let matchingItem;
 
@@ -87,7 +90,12 @@ addCartBtn.forEach((button)=>{
   })
   }
 
-  console.log(cart);
+  let cartQuantity = 0;
+  cart.forEach((item)=>{
+    cartQuantity += item.quantity;
+  });
+  cartQuantityElement.innerHTML = cartQuantity;
+
 });
 });
 
