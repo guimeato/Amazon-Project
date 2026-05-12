@@ -1,4 +1,4 @@
-import {cart} from '../data/cart.js';
+import {cart, addToCart} from '../data/cart.js';
 import {products} from '../data/products.js';
 
 let productsHTML = ''
@@ -70,35 +70,15 @@ const cartQuantityElement = document.querySelector('.cart-quantity');
 
 
 
-let matchingItem;
-
-
-addCartBtn.forEach((button)=>{
-  button.addEventListener('click', ()=>{
-  const productId = button.dataset.productId;
-  
-  cart.forEach((item)=>{
-    if(productId == item.productId){
-      matchingItem = item;
-    }
-  });
-
-  if(matchingItem){
-    matchingItem.quantity += 1;
-  }
-  else{
-    cart.push({
-    productId: productId,
-    quantity: 1
-  })
-  }
-
+function updateCartQuantity(){
   let cartQuantity = 0;
-  cart.forEach((item)=>{
-    cartQuantity += item.quantity;
+  cart.forEach((cartItem)=>{
+    cartQuantity += cartItem.quantity;
   });
   cartQuantityElement.innerHTML = cartQuantity;
+}
 
+function showAddedToCartText(productId){
   const addedToCartText = document.querySelector(`.js-added-to-cart-${productId}`);
 
   addedToCartText.classList.add('js-added-to-cart-visible');
@@ -107,6 +87,18 @@ addCartBtn.forEach((button)=>{
     addedToCartText.classList.remove('js-added-to-cart-visible');
   },2000);
 
+}
+
+
+
+
+addCartBtn.forEach((button)=>{
+  button.addEventListener('click', ()=>{
+  const productId = button.dataset.productId;
+  
+  addToCart(productId);
+  updateCartQuantity();
+  showAddedToCartText(productId);
 });
 });
 
