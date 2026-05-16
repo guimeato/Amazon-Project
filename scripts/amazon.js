@@ -1,4 +1,4 @@
-import {cart, addToCart} from '../data/cart.js';
+import {cart, addToCart,calculateCartQuantity} from '../data/cart.js';
 import {products} from '../data/products.js';
 import { formatCurrency } from './utils/money.js';
 
@@ -50,7 +50,7 @@ products.forEach((object)=>{
           Added
         </div>
 
-        <button class="add-to-cart-button button-primary" data-product-id="${object.id}">
+        <button class="add-to-cart-button button-primary js-add-to-cart-button" data-product-id="${object.id}">
           Add to Cart
         </button>
       </div>
@@ -61,23 +61,22 @@ products.forEach((object)=>{
   
 });
 
-const listOfElements = document.querySelector('.products-grid');
+const listOfElements = document.querySelector('.js-products-grid');
 listOfElements.innerHTML = productsHTML;
 
 
-const addCartBtn = document.querySelectorAll('.button-primary');
+const addCartBtn = document.querySelectorAll('.js-add-to-cart-button');
 
-const cartQuantityElement = document.querySelector('.cart-quantity');
+const cartQuantityElement = document.querySelector('.js-cart-quantity');
 
 
 
 function updateCartQuantity(){
-  let cartQuantity = 0;
-  cart.forEach((cartItem)=>{
-    cartQuantity += cartItem.quantity;
-  });
+  const cartQuantity = calculateCartQuantity();
   cartQuantityElement.innerHTML = cartQuantity;
 }
+
+updateCartQuantity();
 
 function showAddedToCartText(productId){
   const addedToCartText = document.querySelector(`.js-added-to-cart-${productId}`);
