@@ -1,7 +1,6 @@
 import{ calculateCartQuantity, cart, removeFromCart, updateQuantity, updateDeliveryOption } from '../../data/cart.js';
 import { products, getProduct} from '../../data/products.js'
 import { formatCurrency } from '../utils/money.js';
-import { hello } from 'https://unpkg.com/supersimpledev@1.0.1/hello.esm.js'
 import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
 import { deliveryOptions, getDeliveryOption} from '../../data/deliveryOptions.js'
 import { renderPaymentSummary } from './paymentSummary.js';
@@ -119,9 +118,10 @@ import { renderPaymentSummary } from './paymentSummary.js';
       removeFromCart(productId);
 
       document.querySelector(`.js-cart-item-container-${productId}`).remove();
+
       updateCartQuantity();
-
-
+      renderPaymentSummary();
+      
     });
   });
 
