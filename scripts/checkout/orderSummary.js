@@ -2,8 +2,9 @@ import{ calculateCartQuantity, cart, removeFromCart, updateQuantity, updateDeliv
 import { products, getProduct} from '../../data/products.js'
 import { formatCurrency } from '../utils/money.js';
 import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
-import { deliveryOptions, getDeliveryOption} from '../../data/deliveryOptions.js'
+import { calculateDeliveryDate, deliveryOptions, getDeliveryOption} from '../../data/deliveryOptions.js'
 import { renderPaymentSummary } from './paymentSummary.js';
+import { renderCheckoutHeader } from './checkoutHeader.js';
 
  export function renderOrderSummary(){
 
@@ -18,9 +19,7 @@ import { renderPaymentSummary } from './paymentSummary.js';
 
     const deliveryOption = getDeliveryOption(deliveryOptionId);
 
-    const today = dayjs();
-    const deliveryDate = today.add(deliveryOption.deliveryDays, 'days');
-    const dateString = deliveryDate.format('dddd, MMMM D');
+    const dateString = calculateDeliveryDate(deliveryOption);
 
 
     const html = 
@@ -75,10 +74,8 @@ import { renderPaymentSummary } from './paymentSummary.js';
     let deliveryOptionsHtml = '';
 
     deliveryOptions.forEach((deliveryOption)=>{
-      const today = dayjs();
-      const deliveryDate = today.add(deliveryOption.deliveryDays, 'days');
-
-      const dateString = deliveryDate.format('dddd, MMMM D');
+    
+      const dateString = calculateDeliveryDate(deliveryOption);
 
       const priceString = deliveryOption.priceCents === 0? 'FREE' : `$${formatCurrency(deliveryOption.priceCents/100)} - `;
 
@@ -108,22 +105,23 @@ import { renderPaymentSummary } from './paymentSummary.js';
 
   document.querySelector('.js-order-summary').innerHTML = cartItemList;
 
+  
 
   const deleteBtn = document.querySelectorAll('.js-delete-button');
-
 
   deleteBtn.forEach((deleteButton)=>{
     deleteButton.addEventListener('click',()=>{
       const productId = deleteButton.dataset.productId;
       removeFromCart(productId);
 
-      document.querySelector(`.js-cart-item-container-${productId}`).remove();
+      renderOrderSummary();
 
-      updateCartQuantity();
+      renderCheckoutHeader();
       renderPaymentSummary();
       
     });
   });
+
 
   function updateCartQuantity(){
     const cartQuantity = calculateCartQuantity();
@@ -131,7 +129,7 @@ import { renderPaymentSummary } from './paymentSummary.js';
     const quantityElement = document.querySelector('.js-total-cart-items')
     quantityElement.innerHTML = `${cartQuantity} items`;
   }
-  updateCartQuantity();
+  
 
   document.querySelectorAll('.js-update-button')
   .forEach((updateButton)=>{
@@ -157,9 +155,10 @@ import { renderPaymentSummary } from './paymentSummary.js';
 
         updateQuantity(productId,newQuantity);
 
-        document.querySelector(`.js-cart-item-quantity-${productId}`).innerHTML = newQuantity;
+        renderOrderSummary();
 
-        updateCartQuantity();
+        renderCheckoutHeader();
+        renderPaymentSummary();
       }
       else{
         alert('Quantidade incorreta')
@@ -182,9 +181,9 @@ import { renderPaymentSummary } from './paymentSummary.js';
 
         updateQuantity(productId,newQuantity);
 
-        document.querySelector(`.js-cart-item-quantity-${productId}`).innerHTML = newQuantity;
-
-        updateCartQuantity();
+        renderOrderSummary();
+        renderPaymentSummary();
+        renderCheckoutHeader();
         }
         else{
         alert('Quantidade incorreta')
