@@ -21,7 +21,7 @@ describe('test suite: addToCart', ()=>{
     expect(cart[0].quantity).toEqual(2);
   });
 
-  it('adds an existing product to the cart', ()=>{
+  it('adds a new product to the cart', ()=>{
     spyOn(localStorage, 'setItem');
 
     spyOn(localStorage, 'getItem').and.callFake(()=>{
