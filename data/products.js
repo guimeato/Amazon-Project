@@ -11,7 +11,8 @@ export function getProduct(productId){
   return matchingProduct;
 };
 
-class Product {
+
+export class Product {
   id;
   image;
   name;
