@@ -1,15 +1,21 @@
 import { renderCheckoutHeader } from './checkout/checkoutHeader.js';
 import {renderOrderSummary} from './checkout/orderSummary.js';
 import { renderPaymentSummary } from './checkout/paymentSummary.js';
-import {Car, RaceCar} from '../data/car.js';
-import '../data/backend-practice.js';
+import { loadProducts } from '../data/products.js';
+//import {Car, RaceCar} from '../data/car.js';
+//import '../data/backend-practice.js';
+
+loadProducts(()=>{
+
+  renderCheckoutHeader();
+
+  renderOrderSummary();
+
+  renderPaymentSummary();
+  
+});
 
 
-renderCheckoutHeader();
-
-renderOrderSummary();
-
-renderPaymentSummary();
 
 
 
