@@ -6,7 +6,25 @@ import { loadCart } from '../data/cart.js'
 //import {Car, RaceCar} from '../data/car.js';
 //import '../data/backend-practice.js';
 
+async function loadPage(){
 
+  await loadProductsFetch();
+
+  await new Promise((resolve)=>{
+    loadCart(()=>{
+      resolve();
+    });
+  })
+
+  renderCheckoutHeader();
+  renderOrderSummary();
+  renderPaymentSummary();
+}
+    
+
+loadPage();
+
+/*
 Promise.all([
   loadProductsFetch(),
   new Promise((resolve)=>{
@@ -22,7 +40,7 @@ Promise.all([
     renderPaymentSummary();
 });
 
-
+*/
 
 /*
 loadProducts(()=>{
